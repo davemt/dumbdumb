@@ -7,6 +7,7 @@ import (
 	"github.com/mattbaird/gochimp"
 	"log"
 	"net/mail"
+	"os"
 	"smtpd"
 	"strings"
 )
@@ -15,6 +16,36 @@ import (
 // is handled will be sent back via SMTP as well.
 type SMTPListener struct {
 	incoming chan dumbdumb.Request
+	// whitelist of sender domains to accept, nil means no restrictions
+	DomainWhitelist []string
+}
+
+// Called after MAIL FROM, validates sender address (check whitelist, etc.)
+func (l *SMTPListener) checkSender(peer smtpd.Peer, addr string) error {
+	if l.DomainWhitelist == nil || len(l.DomainWhitelist) == 0 {
+		return nil
+	}
+	address, err := mail.ParseAddress(addr)
+	if err != nil {
+		log.Printf("Failed to parse sender address: %v", addr)
+		return smtpd.Error{Code: 501, Message: "Bad sender address"}
+	}
+	parts := strings.SplitN(address.Address, "@", 2)
+	_, domain := parts[0], parts[1]
+
+	// check that domain is on whitelist
+	domainOk := false
+	for _, allowedDomain := range l.DomainWhitelist {
+		if domain == allowedDomain {
+			domainOk = true
+			break
+		}
+	}
+	if !domainOk {
+		log.Printf("Rejected a sender that was not on domain whitelist: %v", addr)
+		return smtpd.Error{Code: 554, Message: "Bad sender address"}
+	}
+	return nil
 }
 
 func (l *SMTPListener) handleMail(peer smtpd.Peer, env smtpd.Envelope) error {
@@ -40,6 +71,7 @@ func (l SMTPListener) Listen(incoming chan dumbdumb.Request) {
 	server := &smtpd.Server{
 		WelcomeMessage: "SMTP Listener ready.",
 		Handler:        l.handleMail,
+		SenderChecker:  l.checkSender,
 	}
 
 	err := server.ListenAndServe("0.0.0.0:25")
