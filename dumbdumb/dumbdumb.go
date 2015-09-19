@@ -16,12 +16,8 @@ func main() {
 		DomainWhitelist: strings.Fields(domainWhitelist),
 	})
 
-	server.AddHandler("weather.*", handler.WeatherHandler{
+	server.AddHandler("[Ww]eather.*", handler.WeatherHandler{
 		WuApiKey: os.Getenv("DUMBDUMB_WEATHERUNDERGROUND_API_KEY"),
-	})
-
-	server.AddHandler("transit mbta.*", handler.TransitMBTAHandler{
-		ApiKey: os.Getenv("DUMBDUMB_TRANSIT_MBTA_API_KEY"),
 	})
 
 	server.ListenAndServe()
