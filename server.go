@@ -36,13 +36,18 @@ type Server struct {
 	handlers  map[string]Handler
 }
 
+func NewServer() *Server {
+	return &Server{
+		listeners: make([]RequestListener, 0),
+		handlers:  make(map[string]Handler),
+	}
+}
+
 func (s *Server) AddListener(l RequestListener) {
-	s.listeners = make([]RequestListener, 0)
 	s.listeners = append(s.listeners, l)
 }
 
 func (s *Server) AddHandler(pattern string, handler Handler) {
-	s.handlers = make(map[string]Handler)
 	s.handlers[pattern] = handler
 }
 

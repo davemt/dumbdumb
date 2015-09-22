@@ -8,8 +8,8 @@ import (
 	"strings"
 )
 
-func main() {
-	server := &dumbdumb.Server{}
+func InitializeServer() *dumbdumb.Server {
+	server := dumbdumb.NewServer()
 
 	// Whitespace-separated list of email address domains
 	domainWhitelist := os.Getenv("DUMBDUMB_SMTP_SENDER_DOMAIN_WHITELIST")
@@ -21,9 +21,14 @@ func main() {
 		WuApiKey: os.Getenv("DUMBDUMB_WEATHERUNDERGROUND_API_KEY"),
 	})
 
-	server.AddHandler("411", handler.PhoneDirectoryHandler{
+	server.AddHandler("411.*", handler.PhoneDirectoryHandler{
 		GoogleAPIKey: os.Getenv("DUMBDUMB_GOOGLE_API_KEY"),
 	})
 
+	return server
+}
+
+func main() {
+	server := InitializeServer()
 	server.ListenAndServe()
 }
