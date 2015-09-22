@@ -60,12 +60,16 @@ func (h PlaceDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
 	placeName := result["name"].(string)
 	phoneNumber := result["international_phone_number"].(string)
 	address := result["formatted_address"].(string)
-	openNow, err := jq.Bool("result", "opening_hours", "open_now")
-	if err != nil {
-		return err
+	isOpen, err := jq.Bool("result", "opening_hours", "open_now")
+	openNowStr := "unknown"
+	if err == nil {
+		if isOpen {
+			openNowStr = "yes"
+		} else {
+			openNowStr = "no"
+		}
 	}
-
 	err = request.SendOutput(fmt.Sprintf("%v\nPhone: %v\nAddr: %v\nOpen now: %v",
-		placeName, phoneNumber, address, openNow))
+		placeName, phoneNumber, address, openNowStr))
 	return err
 }
