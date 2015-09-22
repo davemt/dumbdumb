@@ -58,7 +58,11 @@ func (h PlaceDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
 		return err
 	}
 	placeName := result["name"].(string)
-	phoneNumber := result["international_phone_number"].(string)
+	phoneNumber, ok := result["international_phone_number"]
+	phoneNumberStr := "unknown"
+	if ok {
+		phoneNumberStr = phoneNumber.(string)
+	}
 	address := result["formatted_address"].(string)
 	isOpen, err := jq.Bool("result", "opening_hours", "open_now")
 	openNowStr := "unknown"
@@ -70,6 +74,6 @@ func (h PlaceDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
 		}
 	}
 	err = request.SendOutput(fmt.Sprintf("%v\nPhone: %v\nAddr: %v\nOpen now: %v",
-		placeName, phoneNumber, address, openNowStr))
+		placeName, phoneNumberStr, address, openNowStr))
 	return err
 }
