@@ -14,7 +14,7 @@ type PlaceDirectoryHandler struct {
 }
 
 func (h PlaceDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
-	log.Printf("PhoteDirectoryHandler got request: %v", request.GetPayload())
+	log.Printf("PlaceDirectoryHandler got request: %v", request.GetPayload())
 	parts := strings.SplitAfterN(request.GetPayload(), " ", 2)
 	_, placeQuery := parts[0], parts[1]
 
