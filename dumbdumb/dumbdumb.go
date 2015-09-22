@@ -21,7 +21,7 @@ func InitializeServer() *dumbdumb.Server {
 		WuApiKey: os.Getenv("DUMBDUMB_WEATHERUNDERGROUND_API_KEY"),
 	})
 
-	server.AddHandler("411.*", handler.PlaceDirectoryHandler{
+	server.AddHandler("[Ff]ind.*", handler.PlaceDirectoryHandler{
 		GoogleAPIKey: os.Getenv("DUMBDUMB_GOOGLE_API_KEY"),
 	})
 
