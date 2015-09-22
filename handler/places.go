@@ -9,11 +9,11 @@ import (
 	"strings"
 )
 
-type PhoneDirectoryHandler struct {
+type PlaceDirectoryHandler struct {
 	GoogleAPIKey string
 }
 
-func (h PhoneDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
+func (h PlaceDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
 	log.Printf("PhoteDirectoryHandler got request: %v", request.GetPayload())
 	parts := strings.SplitAfterN(request.GetPayload(), " ", 2)
 	_, placeQuery := parts[0], parts[1]
@@ -60,7 +60,7 @@ func (h PhoneDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
 	placeName := result["name"].(string)
 	phoneNumber := result["international_phone_number"].(string)
 	address := result["formatted_address"].(string)
-	openNow, err := jq.Bool("opening_hours", "open_now")
+	openNow, err := jq.Bool("result", "opening_hours", "open_now")
 	if err != nil {
 		return err
 	}

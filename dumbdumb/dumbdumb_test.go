@@ -25,7 +25,7 @@ func TestMainForSmoke(t *testing.T) {
 	if err != nil {
 		t.Error("Routing to 411 handler failed, had error:", err)
 	}
-	if (*h).(handler.PhoneDirectoryHandler).GoogleAPIKey != "456def" {
+	if (*h).(handler.PlaceDirectoryHandler).GoogleAPIKey != "456def" {
 		t.Error("Routing to 411 handler failed")
 	}
 }
