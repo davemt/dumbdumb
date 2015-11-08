@@ -21,11 +21,19 @@ func TestMainForSmoke(t *testing.T) {
 		t.Error("Routing to weather handler failed")
 	}
 
-	h, err = server.RouteRequest("411 some place")
+	h, err = server.RouteRequest("Find some place")
 	if err != nil {
-		t.Error("Routing to 411 handler failed, had error:", err)
+		t.Error("Routing to PlaceDirectoryHandler handler failed, had error:", err)
 	}
 	if (*h).(handler.PlaceDirectoryHandler).GoogleAPIKey != "456def" {
-		t.Error("Routing to 411 handler failed")
+		t.Error("Routing to PlaceDirectoryHandler handler failed")
+	}
+
+	h, err = server.RouteRequest("Translate homard")
+	if err != nil {
+		t.Error("Routing to translate handler failed, had error:", err)
+	}
+	if (*h).(handler.TranslateHandler).GoogleAPIKey != "456def" {
+		t.Error("Routing to translate handler failed")
 	}
 }

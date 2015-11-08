@@ -25,6 +25,10 @@ func InitializeServer() *dumbdumb.Server {
 		GoogleAPIKey: os.Getenv("DUMBDUMB_GOOGLE_API_KEY"),
 	})
 
+	server.AddHandler("[Tt]ranslate.*", handler.TranslateHandler{
+		GoogleAPIKey: os.Getenv("DUMBDUMB_GOOGLE_API_KEY"),
+	})
+
 	return server
 }
 
