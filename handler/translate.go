@@ -18,11 +18,13 @@ func (h TranslateHandler) HandleRequest(request dumbdumb.Request) error {
 	parts := strings.SplitAfterN(request.GetPayload(), " ", 2)
 	_, query := parts[0], parts[1]
 
+	// TODO: add support for to/from languages
+	// TODO: test sending erroneous keys
+	// TODO: test 403 forbidden error handling (when setting up new Google API)
 	params := napping.Params{
-		"key": h.GoogleAPIKey,
-		"q":   query,
-		// TODO: add support for to/from languages
-		"language": "en",
+		"key":    h.GoogleAPIKey,
+		"q":      query,
+		"target": "en",
 	}
 
 	var data map[string]interface{}
@@ -38,14 +40,15 @@ func (h TranslateHandler) HandleRequest(request dumbdumb.Request) error {
 	jq := jsonq.NewQuery(data)
 
 	// assume the first match is the best
+	detectedSource, err := jq.String("data", "translations", "0", "detectedSourceLanguage")
 	result, err := jq.String("data", "translations", "0", "translatedText")
 
 	if err != nil {
 		return err
 	}
 
-	err = request.SendOutput(fmt.Sprintf("English: %v\n",
-		result))
+	err = request.SendOutput(fmt.Sprintf("en -> %v: %v\n",
+		detectedSource, result))
 
 	return err
 }
