@@ -1,0 +1,6 @@
+# these are dummy values, example of required settings
+export DUMBDUMB_SMTP_MANDRILL_API_KEY="D2H7CmilGP_rvbIYXzFI1j"
+export DUMBDUMB_SMTP_FROM_EMAIL="q@mydomain.com"
+export DUMBDUMB_WEATHERUNDERGROUND_API_KEY="1p09qx71u2deb663"
+export DUMBDUMB_SMTP_SENDER_DOMAIN_WHITELIST="vtext.com"
+export DUMBDUMB_GOOGLE_API_KEY="ZkGbctNvksq7d8l4s7Pj8AaNx8Na-qVwDKvmPu4"
