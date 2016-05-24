@@ -1,7 +1,7 @@
 package listener
 
 import (
-	"smtpd"
+	"bitbucket.org/chrj/smtpd"
 	"testing"
 )
 

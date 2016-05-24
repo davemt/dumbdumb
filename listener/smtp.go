@@ -1,14 +1,14 @@
 package listener
 
 import (
+	"bitbucket.org/chrj/smtpd"
 	"bytes"
-	"dumbdumb"
 	"fmt"
+	"github.com/davemt/dumbdumb"
 	"github.com/mattbaird/gochimp"
 	"log"
 	"net/mail"
 	"os"
-	"smtpd"
 	"strings"
 )
 

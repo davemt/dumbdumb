@@ -1,7 +1,7 @@
 package main
 
 import (
-	"dumbdumb/handler"
+	"github.com/davemt/dumbdumb/handler"
 	"os"
 	"testing"
 )

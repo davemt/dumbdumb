@@ -1,9 +1,9 @@
 package main
 
 import (
-	"dumbdumb"
-	"dumbdumb/handler"
-	"dumbdumb/listener"
+	"github.com/davemt/dumbdumb"
+	"github.com/davemt/dumbdumb/handler"
+	"github.com/davemt/dumbdumb/listener"
 	"os"
 	"strings"
 )

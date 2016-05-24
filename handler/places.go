@@ -1,11 +1,12 @@
 package handler
 
 import (
-	"dumbdumb"
 	"fmt"
+	"github.com/davemt/dumbdumb"
+	"github.com/jmcvetta/napping"
 	"github.com/jmoiron/jsonq"
 	"log"
-	"napping"
+	"net/url"
 	"strings"
 )
 
