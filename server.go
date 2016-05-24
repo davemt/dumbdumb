@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"regexp"
+	"runtime/debug"
 )
 
 // Listeners provide an interface for incoming requests to be submitted.  The
@@ -67,7 +68,8 @@ func (s *Server) RouteRequest(request string) (*Handler, error) {
 func (s *Server) HandleRequest(request Request) {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Printf("Unknown error caused panic! Error details: %v", r)
+			stack := debug.Stack()
+			log.Printf("Unknown error caused panic! Error details: %v, Stacktrace: %s", r, stack)
 		}
 	}()
 	req := request.GetPayload()
