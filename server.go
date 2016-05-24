@@ -64,6 +64,25 @@ func (s *Server) RouteRequest(request string) (*Handler, error) {
 	return nil, errors.New(fmt.Sprintf("No handler matches request '%v'", request))
 }
 
+func (s *Server) HandleRequest(request Request) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("Unknown error caused panic! Error details: %v", r)
+		}
+	}()
+	req := request.GetPayload()
+	handler, err := s.RouteRequest(req)
+	if err != nil {
+		log.Printf("Error routing request: '%v': %v", req, err)
+		return
+	}
+	err = (*handler).HandleRequest(request)
+	if err != nil {
+		log.Printf("Error handling request '%v': %v", req, err)
+		return
+	}
+}
+
 // Begin listening for and handling incoming requests.
 func (s *Server) ListenAndServe() error {
 	ch := make(chan Request)
@@ -74,18 +93,6 @@ func (s *Server) ListenAndServe() error {
 	for {
 		// handle the next request from incoming channel
 		request := <-ch
-		go func() {
-			req := request.GetPayload()
-			handler, err := s.RouteRequest(req)
-			if err != nil {
-				log.Printf("Error routing request: '%v': %v", req, err)
-				return
-			}
-			err = (*handler).HandleRequest(request)
-			if err != nil {
-				log.Printf("Error handling request '%v': %v", req, err)
-				return
-			}
-		}()
+		go s.HandleRequest(request)
 	}
 }

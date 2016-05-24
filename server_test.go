@@ -4,6 +4,14 @@ import (
 	"testing"
 )
 
+type MockRequest struct {
+	Payload string
+}
+
+func (r MockRequest) GetPayload() string { return r.Payload }
+
+func (r MockRequest) SendOutput(output string) error { return nil }
+
 type MockHandler struct {
 	Name string
 }
@@ -37,4 +45,24 @@ func TestRouteRequest(t *testing.T) {
 	if (*h).(MockHandler).Name != h1.Name {
 		t.Error("Routed to wrong handler")
 	}
+}
+
+type PanickingHandler struct{}
+
+func (h PanickingHandler) HandleRequest(request Request) error {
+	panic("I fail")
+}
+
+func TestPanicRecovery(t *testing.T) {
+	server := NewServer()
+
+	server.AddHandler("requesttype1.*", PanickingHandler{})
+
+	defer func() {
+		if r := recover(); r != nil {
+			t.Fatal("Server request handling panicked without recovering")
+		}
+	}()
+
+	server.HandleRequest(MockRequest{Payload: "requesttype1 blah blah"})
 }
