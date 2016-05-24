@@ -4,6 +4,7 @@ import (
 	"github.com/davemt/dumbdumb"
 	"github.com/davemt/dumbdumb/handler"
 	"github.com/davemt/dumbdumb/listener"
+	"log"
 	"os"
 	"strings"
 )
@@ -34,5 +35,7 @@ func InitializeServer() *dumbdumb.Server {
 
 func main() {
 	server := InitializeServer()
+
+	log.Printf("Starting dumbdumb server...")
 	server.ListenAndServe()
 }
