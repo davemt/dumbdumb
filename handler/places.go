@@ -19,10 +19,9 @@ func (h PlaceDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
 	parts := strings.SplitAfterN(request.GetPayload(), " ", 2)
 	_, placeQuery := parts[0], parts[1]
 
-	params := napping.Params{
-		"key":   h.GoogleAPIKey,
-		"query": placeQuery,
-	}
+	params := url.Values{}
+	params.Add("key", h.GoogleAPIKey)
+	params.Add("query", placeQuery)
 
 	var data map[string]interface{}
 
@@ -40,10 +39,9 @@ func (h PlaceDirectoryHandler) HandleRequest(request dumbdumb.Request) error {
 	placeId, err := jq.String("results", "0", "place_id")
 
 	// use place id to query place details
-	params = napping.Params{
-		"key":     h.GoogleAPIKey,
-		"placeid": placeId,
-	}
+	params = url.Values{}
+	params.Add("key", h.GoogleAPIKey)
+	params.Add("placeid", placeId)
 
 	resp, err = napping.Get(
 		"https://maps.googleapis.com/maps/api/place/details/json",

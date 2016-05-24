@@ -15,7 +15,7 @@ type TranslateHandler struct {
 	GoogleAPIKey string
 }
 
-func (h TranslateHandler) BuildAPIParamsFromRequest(request dumbdumb.Request) (napping.Params, error) {
+func (h TranslateHandler) BuildAPIParamsFromRequest(request dumbdumb.Request) (url.Values, error) {
 	// TODO store precompiled on handler or global
 	exp := regexp.MustCompile(
 		// e.g. "Translate en -> fr lobster"
@@ -24,12 +24,11 @@ func (h TranslateHandler) BuildAPIParamsFromRequest(request dumbdumb.Request) (n
 	if match == nil || len(match) != 4 {
 		return nil, errors.New("invalid request format")
 	}
-	params := napping.Params{
-		"key":    h.GoogleAPIKey,
-		"source": match[1],
-		"target": match[2],
-		"q":      match[3],
-	}
+	params := url.Values{}
+	params.Add("key", h.GoogleAPIKey)
+	params.Add("source", match[1])
+	params.Add("target", match[2])
+	params.Add("q", match[3])
 	return params, nil
 }
 

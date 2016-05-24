@@ -30,13 +30,13 @@ func TestBuildAPIParamsFromRequest(t *testing.T) {
 	if err != nil {
 		t.Error(fmt.Sprintf("Failed to parse a request that was valid: %v", err))
 	}
-	if params["key"] != "123abcd" {
+	if params["key"][0] != "123abcd" {
 		t.Error("Failed to add google API key to params")
 	}
-	if params["source"] != "en" || params["target"] != "fr" {
+	if params["source"][0] != "en" || params["target"][0] != "fr" {
 		t.Error("Failed to parse source/target langs from request")
 	}
-	if params["q"] != "lobster" {
+	if params["q"][0] != "lobster" {
 		t.Error("Failed to parse to-translate phrase from request")
 	}
 }

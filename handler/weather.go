@@ -24,10 +24,9 @@ func (h WeatherHandler) HandleRequest(request dumbdumb.Request) error {
 	parts := strings.SplitAfterN(request.GetPayload(), " ", 2)
 	_, locQuery := parts[0], parts[1]
 
-	params := napping.Params{
-		"query": locQuery,
-		"c":     "US",
-	}
+	params := url.Values{}
+	params.Add("query", locQuery)
+	params.Add("c", "US")
 
 	var data map[string]interface{}
 
