@@ -1,6 +1,6 @@
 # dumbdumb
 
-Make your dumbphones kinda smart. Service that accepts text message queries via
+Makes dumbphones smart(er). Service that accepts text message queries via
 emails to built-in SMTP server, delegates to the appropriate APIs to gather
 information and responds succinctly via text messages (email) to the sender.
 
@@ -73,7 +73,7 @@ Example response:
   pointing to it
 * Mandrill (MailChimp) account and API key handy, and hostname for above server
   verified as a sender in the Mandrill interface (Hint: start up the `dumbdumb`
-  service and watch the output to receive your Mandrill verification email.)
+  service and watch the output after you've requested your Mandrill verification email.)
 * Weather Underground account and API key
 * Google Cloud Platform API key with Places and Translate services enabled
 
